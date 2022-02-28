@@ -32,17 +32,17 @@
       ]
 
       let weights = [
-        135,
-        135,
-        42,
-        73,
-        31,
-        42,
-        21,
-        40,
-        40,
-        40
-      ].map(a => a / 600)
+        0.225,
+        0.225,
+        0.07,
+        0.12,
+        0.06,
+        0.07,
+        0.035,
+        0.065,
+        0.065,
+        0.065
+      ]
 
       let costs = [
         2,
@@ -165,7 +165,7 @@
       let estimateGs = gear => {
         let est = gear.reduce((sum, gs, index) => sum + (gs - 600) * weights[index], 600)
         console.log(`Est Gs: ${est}`)
-        return Math.floor(est - 0.5)
+        return est
       }
 
       let update = () => {
@@ -176,7 +176,7 @@
           i.value = newGear[index]
         })
         let est = estimateGs(newGear)
-        rhs.querySelector('h5').textContent = `After Shard Gear (Est. Gs ${est})`
+        rhs.querySelector('h5').textContent = `After Shard Gear (Est. Gs ${Math.floor(est)})`
         let inputs = [...rhs.querySelectorAll('input')]
         inputs.forEach((input, index) => {
           input.style.borderColor = 'white'
@@ -306,11 +306,13 @@
           return;
         }
 
-        let shards = 1;
+        let shards = 0;
         let estimatedGS = currentEstimatedGS
         let cannotBeEstimated = false
-        while (estimatedGS <= currentEstimatedGS) {
-          estimatedGS = estimateGs(findUpgrades(gear, shards++))
+        while (Math.floor(estimatedGS) <= Math.floor(currentEstimatedGS)) {
+          estimatedGS = estimateGs(findUpgrades(gear, shards))
+
+          shards++
 
           if (shards >= shardsSoftCap) {
             cannotBeEstimated = true
@@ -321,7 +323,7 @@
         if (cannotBeEstimated) {
           estimatedShardsValueLabel.textContent = "Cannot be estimated"
         } else {
-          estimatedShardsValueLabel.textContent = shards
+          estimatedShardsValueLabel.textContent = (shards - 1)
         }
       }
 
