@@ -146,12 +146,12 @@
 
       let lhs = createContainer()
       lhs.style.float = 'left'
-      lhs.appendChild(document.createElement('h5'))
+      lhs.appendChild(document.createElement('h4'))
       lhs.children[0].textContent = 'Current Gear'
 
       let rhs = createContainer()
       rhs.style.float = 'right'
-      rhs.appendChild(document.createElement('h5'))
+      rhs.appendChild(document.createElement('h4'))
       rhs.children[0].textContent = 'After Shard Gear'
 
       let getGear = () => {
@@ -222,11 +222,12 @@
         label.textContent = slot
         label.style.paddingRight = '1em'
         label.style.display = 'inline-block'
-        label.style.width = '10em'
+        label.style.width = '5em'
 
         let input = document.createElement('input')
         input.setAttribute('type', 'text')
         input.value = '600'
+        input.size = 1
         input.onchange = validateGs
         input.oninput = input.onchange
 
@@ -235,6 +236,7 @@
         container.appendChild(input)
         container.style.overflow = 'auto'
         container.style.textAlign = 'left'
+        container.className = 'input-container'
         lhs.appendChild(container)
       })
 
@@ -243,11 +245,12 @@
         label.textContent = slot
         label.style.paddingRight = '1em'
         label.style.display = 'inline-block'
-        label.style.width = '10em'
+        label.style.width = '5em'
 
         let input = document.createElement('input')
         input.setAttribute('type', 'text')
         input.setAttribute('readonly', null)
+        input.size = 1
         input.value = '?'
 
         let container = document.createElement('div')
@@ -255,6 +258,7 @@
         container.appendChild(input)
         container.style.overflow = 'auto'
         container.style.textAlign = 'left'
+        container.className = 'input-container'
         rhs.appendChild(container)
       })
 
@@ -411,6 +415,18 @@
         border-color: white;
         font-size: 12px;
         height: 100px;
+      }
+
+      .input-container {
+        margin-top: 0.5em;
+      }
+
+      input {
+        text-align: center;
+      }
+
+      #shards {
+        font-size: 1em;
       }
 
     </style>
