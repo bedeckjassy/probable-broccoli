@@ -13,6 +13,46 @@
         background: black;
         color: white;
       }
+
+      .shards-cost {
+        border-style: dashed;
+        margin: auto;
+        text-align: center;
+        width: 200px;
+        border-width: 1px;
+        border-color: white;
+        font-size: 12px;
+        height: 100px;
+        float: right;
+        margin-right: 500px;
+      }
+
+      .gearscore-container {
+        width: auto;
+        float: left;
+        text-align: left;
+      }
+
+      .gearscore-container input {
+        font-size: 1em;
+        text-align: center;
+      }
+
+      .gearscore-label {
+        width: 150px;
+        padding-top: 10px;
+        display: inline-block;
+      }
+
+      .button-container {
+        width: 250px;
+        float: left;
+      }
+
+      .main-container {
+        margin-top: 100px;
+        text-align: center;
+      }
     </style>
     <link rel="shortcut icon" href="https://cdn.nwdb.info/db/images/live/v4/icons/items/resource/umbralshardt1.png">
   </head>
@@ -141,16 +181,15 @@
         container.style.padding = '.5em'
         container.style.marginBottom = '1em'
         container.style.marginRight = '1em'
+        container.className = 'gearscore-container'
         return container
       }
 
       let lhs = createContainer()
-      lhs.style.float = 'left'
       lhs.appendChild(document.createElement('h5'))
       lhs.children[0].textContent = 'Current Gear'
 
       let rhs = createContainer()
-      rhs.style.float = 'right'
       rhs.appendChild(document.createElement('h5'))
       rhs.children[0].textContent = 'After Shard Gear'
 
@@ -220,13 +259,12 @@
       slots.forEach(slot => {
         let label = document.createElement('span')
         label.textContent = slot
-        label.style.paddingRight = '1em'
-        label.style.display = 'inline-block'
-        label.style.width = '10em'
+        label.className = 'gearscore-label'
 
         let input = document.createElement('input')
         input.setAttribute('type', 'text')
         input.value = '600'
+        input.size = 1
         input.onchange = validateGs
         input.oninput = input.onchange
 
@@ -241,14 +279,13 @@
       slots.forEach(slot => {
         let label = document.createElement('span')
         label.textContent = slot
-        label.style.paddingRight = '1em'
-        label.style.display = 'inline-block'
-        label.style.width = '10em'
+        label.className = 'gearscore-label'
 
         let input = document.createElement('input')
         input.setAttribute('type', 'text')
         input.setAttribute('readonly', null)
         input.value = '?'
+        input.size = 1
 
         let container = document.createElement('div')
         container.appendChild(label)
@@ -347,6 +384,10 @@
         debounce()
       }
       let buttonContainer = document.createElement('div')
+      buttonContainer.className = 'button-container'
+      buttonContainer.appendChild(header)
+      buttonContainer.appendChild(shards)
+      buttonContainer.appendChild(document.createElement('br'))
       buttonContainer.appendChild(button)
 
       buttonContainer.appendChild(document.createElement('br'))
@@ -358,14 +399,14 @@
       boxContainer.style.margin = '0 auto'
       boxContainer.style.padding = '0 10%'
       boxContainer.appendChild(lhs)
+      boxContainer.appendChild(buttonContainer)
       boxContainer.appendChild(rhs)
+      
 
       let container = document.createElement('div')
-      container.style.textAlign = 'center'
-      container.appendChild(header)
-      container.appendChild(shards)
+      container.className = 'main-container'
+
       container.appendChild(boxContainer)
-      container.appendChild(buttonContainer)
       document.body.appendChild(container)
 
       let gs = 590
@@ -397,22 +438,9 @@
         table.appendChild(tableRow)
       }
 
-      buttonContainer.appendChild(table)
+      container.appendChild(table)
 
       load()
     </script>
-    <style>
-      .shards-cost {
-        border-style: dashed;
-        margin: auto;
-        text-align: center;
-        width: 300px;
-        border-width: 1px;
-        border-color: white;
-        font-size: 12px;
-        height: 100px;
-      }
-
-    </style>
   </body>
 </html>
