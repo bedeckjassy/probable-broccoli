@@ -85,41 +85,41 @@
       ]
 
       let costs = [
-        2,
-        4,
-        6,
         10,
-        20,
-        35,
-        50,
-        65,
-        90,
-        125,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        8,
+        10,
+        10,
         10,
         15,
         20,
         25,
+        30,
         35,
-        50,
-        65,
-        90,
-        125,
-        175,
+        40,
+        45,
+        60,
+        80,
+        100,
+        130,
+        170,
+        210,
         250,
-        325,
+        300,
+        340,
+        380,
+        415,
         450,
-        700,
-        1000,
-        1400,
-        1900,
-        2500
+        470,
+        485,
+        500,
+        515,
+        520,
+        530,
+        535,
+        540,
+        545,
+        550,
+        555,
+        560
       ]
 
       let order = costs
@@ -133,43 +133,14 @@
         gear = gear.map(i => i)
         let spent = 0
         let upgrades = 0
-        let allAbove599 = !gear.find(gs => gs < 600)
-        if (allAbove599) {
-          for (let i = 0; i < order.length && spent < shards; ++i) {
-            if (gear[order[i].slot] - 590 === order[i].gs) {
-              if (spent + costs[order[i].gs] > shards) {
-                break
-              }
-              upgrades += 1
-              spent += costs[order[i].gs]
-              gear[order[i].slot] += 1
-            }
-          }
-        } else {
-          while (shards > 0) {
-            // heap when
-            let best = gear.reduce((max, gs, slot) => {
-              if (gs > 624 || gs < 590) {
-                return max
-              }
-              if (max < 0) {
-                return slot
-              }
-              let vMax = weights[max] / costs[gear[max] - 590]
-              let vCurrent = weights[slot] / costs[gs - 590]
-              if (vMax < vCurrent) {
-                return slot
-              }
-              return max
-            }, -1)
-            if (best === -1) {
+        for (let i = 0; i < order.length && spent < shards; ++i) {
+          if (gear[order[i].slot] - 590 === order[i].gs) {
+            if (spent + costs[order[i].gs] > shards) {
               break
             }
-            if (shards < costs[gear[best] - 590]) {
-              break
-            }
-            shards -= costs[gear[best] - 590]
-            gear[best] += 1
+            upgrades += 1
+            spent += costs[order[i].gs]
+            gear[order[i].slot] += 1
           }
         }
         return gear
@@ -202,8 +173,7 @@
       }
 
       let estimateGs = gear => {
-        let est = gear.reduce((sum, gs, index) => sum + (gs - 600) * weights[index], 600)
-        console.log(`Est Gs: ${est}`)
+        let est = gear.reduce((sum, gs, index) => sum + (gs - 590) * weights[index], 590)
         return est
       }
 
@@ -333,13 +303,14 @@
       let estimatedShardsValueLabel = document.createElement('h3')
       estimatedShardsLabel.textContent = 'Est. shards needed to raise GS:'
       
-      const shardsSoftCap = (costs[costs.length - 1] * slots.length);
+      const shardsSoftCap = (costs.reduce((x, y) => x + y)  * slots.length);
 
       function estimateShardsToRaiseGS () {
         let gear = getGear()
         let currentEstimatedGS = estimateGs(gear)
 
         if (currentEstimatedGS >= 625) {
+          estimatedShardsValueLabel.textContent = "Gear is already 625"
           return;
         }
 
@@ -351,7 +322,7 @@
 
           shards++
 
-          if (shards >= shardsSoftCap) {
+          if (shards > shardsSoftCap) {
             cannotBeEstimated = true
             break
           }
